@@ -32,8 +32,17 @@ CREATE TABLE user_marketing_preferences (
   FOREIGN KEY (preference_id) REFERENCES marketing_preferences(id) ON DELETE CASCADE
 );
 
--- Cart Items tablea
+-- Cart Items table
 CREATE TABLE cart_items (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  product_id INT NOT NULL,
+  quantity INT NOT NULL DEFAULT 1,
+  FOREIGN KEY (user_id) REFERENCES users(id),
+  FOREIGN KEY (product_id) REFERENCES products(id)
+);
+-- inventory Items table
+CREATE TABLE inventory_items (
   id INT AUTO_INCREMENT PRIMARY KEY,
   user_id INT NOT NULL,
   product_id INT NOT NULL,

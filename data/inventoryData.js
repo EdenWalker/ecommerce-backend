@@ -1,7 +1,7 @@
 const pool = require('../database');
 
-// Fetch cart contents for a user
-async function getCartContents(userId) {
+// Fetch inventory contents for a user
+async function getinventoryContents(userId) {
   const [rows] = await pool.query(
     `SELECT 
     c.product_id, 
@@ -10,7 +10,7 @@ async function getCartContents(userId) {
     p.image, 
     c.quantity 
    FROM 
-    cart_items c 
+    inventory_items c 
    JOIN 
     products p 
    ON 
@@ -18,23 +18,23 @@ async function getCartContents(userId) {
    WHERE 
     c.user_id = ?`,
   [userId]
-);
+  );
   return rows;
 }
 
-// Bulk update the cart contents
-async function updateCart(userId, cartItems) {
+// Bulk update the inventory contents
+async function updateinventory(userId, inventoryItems) {
   const connection = await pool.getConnection();
   try {
     await connection.beginTransaction();
 
-    // Clear existing cart items for the user
-    await connection.query('DELETE FROM cart_items WHERE user_id = ?', [userId]);
+    // Clear existing inventory items for the user
+    await connection.query('DELETE FROM inventory_items WHERE user_id = ?', [userId]);
 
-    // Insert each item in the new cart
-    for (const item of cartItems) {
+    // Insert each item in the new inventory
+    for (const item of inventoryItems) {
       await connection.query(
-        'INSERT INTO cart_items (user_id, product_id, quantity) VALUES (?, ?, ?)',
+        'INSERT INTO inventory_items (user_id, product_id, quantity) VALUES (?, ?, ?)',
         [userId, item.product_id, item.quantity]
       );
     }
@@ -49,6 +49,6 @@ async function updateCart(userId, cartItems) {
 }
 
 module.exports = {
-  getCartContents,
-  updateCart, // New bulk update function
+  getinventoryContents,
+  updateinventory, // New bulk update function
 };

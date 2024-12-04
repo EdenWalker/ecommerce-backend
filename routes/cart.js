@@ -16,8 +16,8 @@ router.get('/', async (req, res) => {
   }
 });
 
-// PUT bulk update cart
-router.put('/', async (req, res) => {
+// PUT bulk update cart // changed to post
+router.post('/', async (req, res) => {
   try {
     const cartItems = req.body.cartItems; // Expects an array of items with productId and quantity
     await cartService.updateCart(req.user.userId, cartItems);
